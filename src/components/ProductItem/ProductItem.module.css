@@ -1,0 +1,13 @@
+.item {
+    max-width: 19.5%;
+    width: 100%;
+    list-style: none;
+    border: 1px solid #2e2e2e;
+    margin-bottom: 8px;
+    border-radius: 5px;
+    padding: 8px 5px;
+    display: flex;
+    flex-direction: column;
+    min-height: 150px;
+    justify-content: space-between;
+}
