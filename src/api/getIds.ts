@@ -1,20 +1,24 @@
 import { Filter } from "../hooks/useFilter.ts"
 import { api, IResponseIds } from "./api.ts"
 
-const getAllIds = async (): Promise<string[]> => {
+const getAllIds = async (): Promise<string[] | undefined> => {
   try {
     const res = await api<IResponseIds>({
       action: "get_ids",
     })
     return [...new Set(res.result)]
   } catch (e) {
-    return getAllIds()
+    if (e instanceof Error) {
+      if (e.message === "Network response was not ok") {
+        return getAllIds()
+      }
+    }
   }
 }
 
 const getFilteredIds = async (
   filterParams: Partial<Filter>,
-): Promise<string[]> => {
+): Promise<string[] | undefined> => {
   try {
     const ids = await api<IResponseIds>({
       action: "filter",
@@ -22,7 +26,11 @@ const getFilteredIds = async (
     })
     return [...new Set(ids.result)]
   } catch (e) {
-    return await getFilteredIds(filterParams)
+    if (e instanceof Error) {
+      if (e.message === "Network response was not ok") {
+        return await getFilteredIds(filterParams)
+      }
+    }
   }
 }
 

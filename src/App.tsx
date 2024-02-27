@@ -26,6 +26,10 @@ function App() {
 
   useEffect(() => {
     getFields().then((res) => {
+      if (!res) {
+        setFields([])
+        return
+      }
       setFields([...new Set(res)].filter((field) => field))
     })
   }, [])
@@ -56,7 +60,7 @@ function App() {
     if (Object.keys(filter).some((key) => filter[key] && key !== "brand")) {
       debouncedGetIds(filter, setIds)
     } else {
-      getIds(filter).then((ids) => setIds(ids))
+      getIds(filter).then((ids) => setIds(ids || []))
     }
     setPage(1)
     setOffset(0)

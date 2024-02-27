@@ -1,6 +1,6 @@
 import { api } from "./api.ts"
 
-export const getFields = async (): Promise<string[]> => {
+export const getFields = async (): Promise<string[] | undefined> => {
   try {
     const res = await api<Record<"result", string[]>>({
       action: "get_fields",
@@ -10,6 +10,8 @@ export const getFields = async (): Promise<string[]> => {
     })
     return res.result
   } catch (e) {
-    return await getFields()
+    if (e instanceof Error) {
+      if (e.message === "Network response was not ok") return await getFields()
+    }
   }
 }
