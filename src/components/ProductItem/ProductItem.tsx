@@ -5,7 +5,7 @@ interface Props {
   productData: IProduct
 }
 export const ProductItem = ({ productData }: Props) => {
-  const { id, product, brand, price } = productData
+  const { product, brand, price } = productData
   return (
     <li className={s.item}>
       <h3>{product}</h3>

@@ -1,15 +1,17 @@
 import md5 from "md5"
 import { getCurrentDate } from "../utils/getCurrentDate.ts"
 
-interface IParams {
-  price?: number
+export interface IParams {
+  price?: number | null
   offset?: number
   limit?: number
   ids?: string[]
   field?: string
+  name?: null | string
+  brand?: null | string
 }
 
-interface IBody {
+export interface IBody {
   action: "get_ids" | "filter" | "get_items" | "get_fields"
   params?: IParams
 }
@@ -46,38 +48,4 @@ export const api = <T>(body: IBody): Promise<T> => {
       console.log(e.message)
       throw e
     })
-}
-
-export const getIds = async (): Promise<string[]> => {
-  try {
-    const res = await api<IResponseIds>({
-      action: "get_ids",
-      // params: {
-      //   offset,
-      // },
-    })
-    return [...new Set(res.result)]
-  } catch (e) {
-    return getIds()
-  }
-}
-
-export const getItemsById = async (ids: string[]): Promise<IProduct[]> => {
-  try {
-    const res = await api<Record<"result", IProduct[]>>({
-      action: "get_items",
-      params: {
-        ids,
-      },
-    })
-    // if (!res) return []
-    return res.result.reduce((acc, product) => {
-      if (!acc.find((item) => item.id === product.id)) {
-        acc.push(product)
-      }
-      return acc
-    }, [] as IProduct[])
-  } catch (e) {
-    return await getItemsById(ids)
-  }
 }

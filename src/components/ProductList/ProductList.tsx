@@ -9,10 +9,11 @@ interface Props {
 export const ProductList = ({ products }: Props) => {
   return (
     <ul className={s.list}>
-      {products.length &&
-        products.map((product) => (
-          <ProductItem productData={product} key={product.id} />
-        ))}
+      {products.length
+        ? products.map((product) => (
+            <ProductItem productData={product} key={product.id} />
+          ))
+        : "Ничего не найдено!"}
     </ul>
   )
 }
