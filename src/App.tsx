@@ -36,9 +36,21 @@ function App() {
   }, [])
 
   const loadNextPage = useCallback(() => {
-    setPage((prev) => prev + 1)
-    setOffset((prev) => prev + pageSize)
-  }, [])
+    setPage((prev) => {
+      if (ids.length - prev * pageSize <= 0) {
+        return prev
+      } else {
+        return prev + 1
+      }
+    })
+    setOffset((prev) => {
+      if (ids.length - prev <= pageSize) {
+        return prev
+      } else {
+        return prev + pageSize
+      }
+    })
+  }, [ids])
 
   useEffect(() => {
     if (Object.keys(filter).some((key) => filter[key] && key !== "brand")) {
@@ -47,7 +59,7 @@ function App() {
       getIds(filter).then((ids) => setIds(ids))
     }
     setPage(1)
-    setOffset(1)
+    setOffset(0)
   }, [filter])
 
   useEffect(() => {
