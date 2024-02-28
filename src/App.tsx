@@ -57,10 +57,14 @@ function App() {
   }, [ids])
 
   useEffect(() => {
+    setLoading(true)
     if (Object.keys(filter).some((key) => filter[key] && key !== "brand")) {
       debouncedGetIds(filter, setIds)
     } else {
-      getIds(filter).then((ids) => setIds(ids || []))
+      getIds(filter).then((ids) => {
+        setIds(ids || [])
+        setLoading(false)
+      })
     }
     setPage(1)
     setOffset(0)
